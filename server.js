@@ -59,11 +59,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 
-app.get('/ping', function (req, res) {
-  return res.send('pong');
-});
+const userController = require('./db/controllers').user;
 
 //------------------------Backend API-------------------------------
+app.get("/api/ping", async (req, res) => {
+  try {
+    res.send("pong");
+  } catch (e) { console.log(e); }
+});
+
 app.get("/api/players", async (req, res) => {
   try {
     let players = ['lol'];
@@ -73,7 +77,7 @@ app.get("/api/players", async (req, res) => {
 
 app.get("/api/init", async (req, res) => {
   try {
-    if (!req.cookies.twelveId) {
+    if (!req.cookies || !req.cookies.twelveId) {
       res.cookie('twelveId', process.env.TWELVE_ID, {
         maxAge: 12 * 60 * 60 * 1000, // 12 hours
         secure: true,
@@ -85,7 +89,9 @@ app.get("/api/init", async (req, res) => {
   } catch (e) { console.log(e); }
 });
 
-app.post("/api/auth", async (req, res) => {
+app.post("/api/signup", userController.create);
+
+app.post("/api/signin", async (req, res) => {
   try {
     const code = req.body.code;
 
@@ -100,7 +106,7 @@ app.post("/api/auth", async (req, res) => {
 
     if (authAccs.includes(userInfo.data.email)) {
       res.cookie('twelveId', process.env.TWELVE_ID, {
-        maxAge: 12* 60 * 60 * 1000, // 12 hours
+        maxAge: 12 * 60 * 60 * 1000, // 12 hours
         secure: true,
         sameSite: true,
       });
@@ -162,6 +168,6 @@ const emitData = socket => {
 
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
-}); 
+});
 
 server.listen(port);

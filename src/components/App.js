@@ -369,7 +369,7 @@ class App extends React.Component {
     let res;
 
     try {
-      res = await axios.post('/api/auth', {
+      res = await axios.post('/api/signin', {
         code: code
       });
       document.cookie = "loginAttempt=" + res.data.toString();
