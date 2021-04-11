@@ -90,6 +90,7 @@ app.get("/api/init", async (req, res) => {
 });
 
 app.post("/api/signup", userController.create);
+app.get("/api/login", userController.retrieve);
 
 app.post("/api/signin", async (req, res) => {
   try {

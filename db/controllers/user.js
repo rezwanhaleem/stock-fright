@@ -1,4 +1,5 @@
 const User = require('../models').User;
+const sequelize = require('sequelize');
 
 module.exports = {
   create(req, res) {
@@ -8,23 +9,21 @@ module.exports = {
         tickers: req.body.tickers ? req.body.tickers : ''
       })
       .then(user => res.status(201).send(user))
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(409).send({
+        message: 'Duplicate User',
+      }));
   },
   retrieve(req, res) {
     return User
-      .find({
+      .findAll({
         where: {
-          email: req.params.email
+          email: req.body.email
         },
+        rejectOnEmpty: true
       })
-      .then(user => {
-        if (!user) {
-          return res.status(404).send({
-            message: 'User Not Found',
-          });
-        }
-        return res.status(200).send(user);
-      })
-      .catch(error => res.status(400).send(error));
-  },
+      .then(Users => res.status(200).send(Users[0]))
+      .catch(error => res.status(404).send({
+        message: 'User Not Found',
+      }));
+  }
 };
