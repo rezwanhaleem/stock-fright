@@ -13,17 +13,14 @@ module.exports = {
         message: 'Duplicate User',
       }));
   },
-  retrieve(req, res) {
+  retrieveOrCreate(email) {
     return User
-      .findAll({
+      .findOrCreate({
         where: {
-          email: req.body.email
-        },
-        rejectOnEmpty: true
+          email: email
+        }
       })
-      .then(Users => res.status(200).send(Users[0]))
-      .catch(error => res.status(404).send({
-        message: 'User Not Found',
-      }));
+      .then(user => user)
+      .catch(error => null);
   }
 };

@@ -1,0 +1,171 @@
+.Login {
+  background-color: #fff;
+  margin-top: 3em;
+  border-radius: 15px;
+  padding: 0;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.Login .discord {
+  color: #7289da;
+}
+
+.Login .assigned {
+  color: #39cb8c;
+}
+
+.Login h4 {
+  font-size: 35px !important;
+}
+
+.Login h5 {
+  font-size: 20px !important;
+  color: #fff;
+}
+
+.Login i {
+  margin-right: 10px;
+}
+
+.Login td {
+  text-align: left;
+}
+
+.table-container {
+  padding: 0 1em 1em 1em;
+}
+
+.login {
+  background-color: #0CAF82;
+  padding-bottom: 2em;
+}
+
+.login .price {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+.login h4 i {
+  margin-right: 10px;
+}
+
+.Login .svg-container {
+  transform: scaleY(-1);
+}
+
+/* .login .settings {
+  flex-direction: column;
+} */
+
+.login .settings .daySetting {
+  /* width: 100% !important;
+  flex: none !important; */
+  flex: 1 0 49%;
+}
+
+.login .settings .spacer{
+  flex: 0 0 0%;
+}
+
+.login .api {
+  cursor: auto;
+  display: flex;
+  flex: 0 0 0%;
+  background-color: #fff;
+  color: #0CAF82;
+  overflow: hidden;
+  padding: 0;
+}
+
+.finish {
+  display: flex;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.finish .api {
+  margin: 0;
+}
+
+.finish .api:not(:last-child) {
+  margin-right: 1em;
+}
+
+.finish i {
+  margin-left: 0px !important;
+}
+
+.api.start-over:hover {
+  color: #DB4437;
+}
+
+.icon-container {
+  line-height: 1em;
+  overflow: hidden;
+}
+
+.icon-container.upwards i {
+  transform: translateY(100%);
+  animation: login 2s linear infinite;
+}
+
+.key,
+.key:focus {
+  outline: none;
+  border: none; 
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 1;
+  caret-color: auto;
+  min-width: 0px;
+}
+
+.api .save{
+  cursor: pointer;
+}
+
+.api .save:active{
+  color: #007e55 ;
+}
+
+.settings {
+  transition: flex-grow 1s linear;
+  transition: flex-shrink 1s linear;
+}
+
+.settings.private .api{
+  flex-basis: 49%;
+  padding: 0 .5em;
+}
+
+.settings.private .spacer{
+  flex-basis: 1%;
+}
+
+.settings .api.err {
+ color:#DB4437;
+}
+
+.settings p.error {
+  line-height: 1em;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex: 0 0;
+  white-space: nowrap;
+  transition: flex-basis 0.7s;
+  overflow: hidden;
+}
+
+.err p.error.err,
+.err p.error.errShown:hover {
+  flex-basis: 30%;
+}
+
+@keyframes login {
+	from   {transform: translateY(100%)}
+	to  {transform: translateY(-100%)}
+}

@@ -89,9 +89,6 @@ app.get("/api/init", async (req, res) => {
   } catch (e) { console.log(e); }
 });
 
-app.post("/api/signup", userController.create);
-app.get("/api/login", userController.retrieve);
-
 app.post("/api/signin", async (req, res) => {
   try {
     const code = req.body.code;
@@ -103,9 +100,9 @@ app.post("/api/signin", async (req, res) => {
       auth: oauth2Client,
     });
 
-    const authAccs = process.env.GOOGLE_AUTHORIZED_ACCOUNTS.split(",");
+    const user = await userController.retrieveOrCreate(userInfo.data.email);
 
-    if (authAccs.includes(userInfo.data.email)) {
+    if (user) {
       res.cookie('twelveId', process.env.TWELVE_ID, {
         maxAge: 12 * 60 * 60 * 1000, // 12 hours
         secure: true,

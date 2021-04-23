@@ -2,11 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import Modal from 'react-awesome-modal';
 
 import Nav from './Nav';
 import Start from './Start';
 import TestHook from './TestHook';
 import End from './End';
+import Login from './Login';
 import Progress from './Progress';
 import Carousel from './Carousel';
 import DummyData from '../data/DummyData';
@@ -30,7 +32,14 @@ class App extends React.Component {
     dataLoaded: false,
     loadID: [false, false, false],
     googleUrl: '',
-    userName: ''
+    userName: '',
+    modal: { visible: false, title: '', content: '' },
+    publicKey: true,
+    privateKey: '',
+    keyErrColor: '',
+    keyErr: '',
+    keyIcon: 'fa-save',
+    keInput: ''
   };
 
   updateCurrentAssignment() {
@@ -234,6 +243,35 @@ class App extends React.Component {
     this.setState({ loadID: tempIsLoaded });
   }
 
+  toggleKey = () => {
+    this.setState(prevState => ({ publicKey: !prevState.publicKey }));
+  }
+
+  saveKey = async () => {
+    let res;
+    let key = this.state.keyInput;
+    try {
+      res = await axios.get('https://api.twelvedata.com/price', { params: { symbol: 'AAPL', apikey: key } });
+      console.log(res);
+      if (res.data.code && res.data.code == 401) {
+        this.setState({ keyErr: 'err', keyErrColor: 'err' }, () => {
+          setTimeout(() => {
+            this.setState({ keyErr: 'errShown'});
+          }, 3000);
+        });
+      } else {
+        this.setState({ privateKey: key, keyErr: '', keyErrColor: '', keyIcon: 'fa-check-double' });
+      }
+    }
+    catch (err) {
+      console.log('Connection Failed! :(. ' + err);
+    }
+  }
+
+  keyInputChange = e => {
+    this.setState({keyInput: e.target.value, keyErrColor: '', keyIcon: 'fa-save'})
+  }
+
   assignPlayer = (assignment, index) => {
     let tempAssign = this.state.currentAssignment.slice();
 
@@ -345,9 +383,9 @@ class App extends React.Component {
 
   init = async () => {
     let res;
-    let userName  = this.getCookie('userName');
+    let userName = this.getCookie('userName');
 
-    if (userName  === "") {
+    if (userName === "") {
       try {
         res = await axios.get('/api/init', {
           headers: {
@@ -399,8 +437,8 @@ class App extends React.Component {
         customUI: ({ onClose }) => {
           return (
             <div className='custom-ui'>
-              <h1 style={{ color: '#DB4437' }}>Hey There</h1>
-              <p style={{ color: '#DB4437' }}> All your settings will be saved for this Google Account!</p>
+              <h1 style={{ color: '#DB4437' }}>No Account Found</h1>
+              <p style={{ color: '#DB4437' }}> Please signup with your Google account</p>
               <div className='alert-container'>
                 <button className="checkbox" onClick={onClose}>
                   Ok
@@ -415,6 +453,30 @@ class App extends React.Component {
     else if (loginAttempt === "Authorized") {
       document.cookie = "loginAttempt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     }
+  }
+
+  genGoogleButtons = () => {
+    // return(
+
+    // );
+  }
+
+  openModal = () => {
+    this.setState(prevState => ({
+      modal: {
+        ...prevState.modal,
+        visible: true
+      }
+    }));
+  }
+
+  closeModal = () => {
+    this.setState(prevState => ({
+      modal: {
+        ...prevState.modal,
+        visible: false
+      }
+    }));
   }
 
   savePlayerState = () => {
@@ -445,8 +507,8 @@ class App extends React.Component {
 
     if (this.getCookie('appState') !== "") {
       let appState = JSON.parse(this.getCookie('appState'));
-      
-      if(appState.players.length > 0){
+
+      if (appState.players.length > 0) {
         this.setState({
           players: appState.players,
           currentAssignment: appState.currentAssignment,
@@ -459,7 +521,7 @@ class App extends React.Component {
           loadID: appState.loadID
         }, this.updateCurrentAssignment);
       }
-      else{
+      else {
         this.setState({ players: DummyData }, this.updateCurrentAssignment);
       }
     }
@@ -532,6 +594,29 @@ class App extends React.Component {
                 saveChanges={this.saveChanges}
                 startOver={this.startOver}
                 changePage={this.handlePageChange}
+              />
+            </div>
+            <div className="page page-3">
+              <Login
+                publicKey={this.state.publicKey}
+                privateKey={this.state.privateKey}
+                toggleKey={this.toggleKey}
+                saveKey={this.saveKey}
+                players={this.state.players}
+                daySetting={this.state.daySetting}
+                currentAssignment={this.state.currentAssignment}
+                loadID={this.state.loadID}
+                dataLoaded={this.state.dataLoaded}
+                uploading={this.state.uploading}
+                toggleLoad={this.toggleLoad}
+                saveChanges={this.saveChanges}
+                startOver={this.startOver}
+                changePage={this.handlePageChange}
+                keyErrColor={this.state.keyErrColor}
+                keyErr={this.state.keyErr}
+                keyIcon={this.state.keyIcon}
+                keyInputChange={this.keyInputChange}
+                keyInput={this.state.keyInput}
               />
             </div>
           </div>

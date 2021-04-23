@@ -82,7 +82,7 @@
 .start {
   margin-top: 3em;
   max-width: 80%;
-  background-image: url(../hero.png);
+  background-image: url(./assets/hero.png);
   background-size: cover;
   padding: 10% 0 0 0;
   cursor: default;
@@ -108,7 +108,7 @@
   transform: none;
 }
 
-.start.card.text-center::before {
+.start.card.text-center::before{
   height: 40%;
   bottom: -10%;
 }
@@ -119,7 +119,7 @@ svg {
   display: block;
 }
 
-.start h4 {
+.start h4{
   font-size: 35px;
 }
 
@@ -248,7 +248,8 @@ svg {
 }
 
 .load-data,
-.next-page {
+.next-page,
+.api {
   margin: 0 auto;
   color: #fff;
   justify-content: center;
@@ -266,7 +267,7 @@ svg {
   position: relative;
 }
 
-.next-page {
+.next-page, .api {
   border: none;
   z-index: 5;
   border-radius: 40px;
@@ -277,12 +278,12 @@ svg {
   margin-right: 10px;
 }
 
-.next-page i{
+.next-page i, .api i{
   margin-left: 10px;
 }
 
 .load-data:hover,
-.next-page:hover {
+.next-page:hover{
   background-color: #fff;
   color: #0CAF82;
 }

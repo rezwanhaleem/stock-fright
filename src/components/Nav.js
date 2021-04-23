@@ -8,6 +8,7 @@ class Nav extends React.Component {
         selected1: '',
         selected2: 'active',
         selected3: '',
+        selected4: '',
         activeTop: 0,
         activeLeft: 0,
         activeHeight: 0,
@@ -16,19 +17,22 @@ class Nav extends React.Component {
 
     constructor(props) {
         super(props);
-        this.tab = [React.createRef(), React.createRef(), React.createRef()];
+        this.tab = [React.createRef(), React.createRef(), React.createRef(),React.createRef()];
     }
 
     handleClick = (tabId) => {
         switch (tabId) {
             case 0:
-                this.setState({ selected1: 'active', selected2: '', selected3: '' });
+                this.setState({ selected1: 'active', selected2: '', selected3: '', selected4: ''});
                 break;
             case 1:
-                this.setState({ selected1: '', selected2: 'active', selected3: '' });
+                this.setState({ selected1: '', selected2: 'active', selected3: '', selected4: ''});
                 break;
             case 2:
-                this.setState({ selected1: '', selected2: '', selected3: 'active' });
+                this.setState({ selected1: '', selected2: '', selected3: 'active', selected4: ''});
+                break;
+            case 3:
+                this.setState({ selected1: '', selected2: '', selected3: '', selected4: 'active'});
                 break;
             default:
                 break;
@@ -38,7 +42,7 @@ class Nav extends React.Component {
         this.setState({
             activeTop: targ.offsetTop,
             activeLeft: targ.offsetLeft,
-            activeHeight: targ.offsetHeight + 1,
+            activeHeight: targ.offsetHeight + 0.4,
             activeWidth: targ.clientWidth
         });
         this.props.onPageChange(tabId);
@@ -90,19 +94,6 @@ class Nav extends React.Component {
         });
     }
 
-    renderLogin = () => {
-        if (this.props.userName !== "") {
-            return (
-                <div className="nav-link google" onClick={this.signOut}><i className="fab fa-google"></i>{this.props.userName}</div>
-            );
-        }
-        else {
-            return (
-                <div className="nav-link google" onClick={this.signIn}>Sign in with <i className="fab fa-google"></i></div>
-            );
-        }
-    }
-
     componentDidUpdate(prevProps) {
         if ((this.props.page !== prevProps.page) ||
             (this.props.googleUrl !== prevProps.googleUrl)) {
@@ -139,8 +130,8 @@ class Nav extends React.Component {
                         <li ref={this.tab[2]} className={"nav-item " + this.state.selected3} onClick={(e) => this.handleClick(2)}>
                             <div className="nav-link" ><i className="fas fa-file-upload"></i>Upload</div>
                         </li>
-                        <li>
-                            {this.renderLogin()}
+                        <li ref={this.tab[3]} className={"nav-item " + this.state.selected4} onClick={(e) => this.handleClick(3)}>
+                        <div className="nav-link google"><i className="fas fa-cog"></i>Settings</div>
                         </li>
                     </ul>
                 </div>

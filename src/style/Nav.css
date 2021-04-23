@@ -38,8 +38,8 @@
 	line-height: 1em;
 }
 
-#navbarSupportedContent ul li .nav-link.google:hover i{
-	animation: google 3s linear infinite;
+#navbarSupportedContent ul li.active .nav-link.google i{
+	/* animation: google 10s linear infinite; */
 }
 
 #navbarSupportedContent li {
@@ -63,7 +63,7 @@
 }
 
 #navbarSupportedContent>ul>li.active>.nav-link{
-	color: #0CAF82;
+	color: #007e55;
 	background-color: transparent;
 	transition: all 0.7s;
 }
